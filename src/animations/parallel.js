@@ -33,8 +33,8 @@ export class Parallel extends Collection {
   init(tick, force) {
     if (this.start !== null && !force) return
     this.start = tick
-    this.all('init', tick, force)
-    this.emit('start')
+    this.all("init", tick, force)
+    this.emit("start")
   }
 
   /**
@@ -72,14 +72,14 @@ export class Parallel extends Collection {
    * Pauses animations
    */
   pause() {
-    this.all('pause')
+    this.all("pause")
   }
 
   /**
    * Resumes animations
    */
   resume() {
-    this.all('resume')
+    this.all("resume")
   }
 
   /**
@@ -88,7 +88,7 @@ export class Parallel extends Collection {
    * @fires Parallel#end
    */
   end(abort = false) {
-    this.all('end', abort)
-    this.emit('end')
+    this.all("end", abort)
+    this.emit("end")
   }
 }

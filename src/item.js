@@ -4,12 +4,13 @@ import { Matrix } from './math/matrix.js'
 import { EventEmitter } from './eventemitter.js'
 import { CSS } from './css.js'
 import { transformProperty } from './utils.js'
+import { Collection } from "./animations/collection.js"
 
 export class Item extends EventEmitter {
-	/**
-	 * Creates new animated item
-	 * @param {HTMLElement} node
-	 */
+  /**
+   * Creates new animated item
+   * @param {HTMLElement} node
+   */
   constructor(node) {
     super()
     this.dom = node
@@ -86,9 +87,7 @@ export class Item extends EventEmitter {
    */
   matrix() {
     const state = this.state
-    return Matrix.compose(
-      state.translate, state.rotate, state.scale
-    )
+    return Matrix.compose(state.translate, state.rotate, state.scale)
   }
 
   /**
@@ -104,10 +103,10 @@ export class Item extends EventEmitter {
    * @param {Array} vector
    */
   lookAt(vector) {
-    const transform = Matrix.decompose(Matrix.lookAt(
-      vector, this.get('translate'), Vector.set(0, 1, 0)
-    ))
-    this.set('rotate', transform.rotate)
+    const transform = Matrix.decompose(
+      Matrix.lookAt(vector, this.get("translate"), Vector.set(0, 1, 0))
+    )
+    this.set("rotate", transform.rotate)
   }
 
   /**
@@ -169,16 +168,20 @@ export class Item extends EventEmitter {
    */
   alternate(transform, duration, ease, delay) {
     if (this.animation.length) {
-      this.animation.get(0).merge(transform, duration, ease, delay)
+      const a = this.animation.get(0)
+      if (a instanceof Collection) {
+        return
+      }
+      a.merge(transform, duration, ease, delay)
     } else {
       this.animate.call(this, transform, duration, ease, delay)
     }
   }
 
-	/**
-	 * Finishes all Item animations
-	 * @param {boolean=} abort
-	 */
+  /**
+   * Finishes all Item animations
+   * @param {boolean=} abort
+   */
   finish(abort = false) {
     this.animation.end(abort)
     return this

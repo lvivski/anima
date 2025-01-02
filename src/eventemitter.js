@@ -3,24 +3,24 @@ export class EventEmitter {
     this.handlers = {}
   }
 
-	/**
-	 * Adds handler for event
-	 * @param {string} event
-	 * @param {Function} handler
-	 * @returns {EventEmitter}
-	 */
+  /**
+   * Adds handler for event
+   * @param {string} event
+   * @param {Function} handler
+   * @returns {EventEmitter}
+   */
   on(event, handler) {
     this.handlers[event] ??= []
     this.handlers[event].push(handler)
     return this
   }
 
-	/**
-	 * Removes event handler
-	 * @param {string} event
-	 * @param {Function} handler
-	 * @returns {EventEmitter}
-	 */
+  /**
+   * Removes event handler
+   * @param {string} event
+   * @param {Function} handler
+   * @returns {EventEmitter}
+   */
   off(event, handler) {
     const handlers = this.handlers[event]
 
@@ -33,11 +33,11 @@ export class EventEmitter {
     return this
   }
 
-	/**
-	 * Triggers event
-	 * @param {string} event
-	 * @returns {EventEmitter}
-	 */
+  /**
+   * Triggers event
+   * @param {string} event
+   * @returns {EventEmitter}
+   */
   emit(event, ...args) {
     const handlers = this.handlers[event]
 
@@ -58,5 +58,4 @@ export class EventEmitter {
   listeners(event) {
     return this.handlers[event] || []
   }
-
 }

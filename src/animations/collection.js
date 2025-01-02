@@ -1,11 +1,11 @@
-import { EventEmitter } from '../eventemitter.js'
-import { easings } from './easings.js'
-import { Item } from '../item.js'
-import { CssAnimation } from './css_animation.js'
-import { Animation } from './animation.js'
-import { Sequence } from './sequence.js'
-import { Parallel } from './parallel.js'
-import { CSS } from '../css.js'
+import { EventEmitter } from "../eventemitter.js"
+import { easings } from "./easings.js"
+import { Item } from "../item.js"
+import { CssAnimation } from "./css_animation.js"
+import { Animation } from "./animation.js"
+import { Sequence } from "./sequence.js"
+import { Parallel } from "./parallel.js"
+import { CSS } from "../css.js"
 
 export class Collection extends EventEmitter {
   /**
@@ -21,7 +21,7 @@ export class Collection extends EventEmitter {
     this.delay = 0
     this.duration = 0
     this.ease = easings.linear
-    this.easeName = 'linear'
+    this.easeName = "linear"
     this.animations = []
   }
 
@@ -36,8 +36,15 @@ export class Collection extends EventEmitter {
   add(transform, duration, ease, delay, generated) {
     if (Array.isArray(transform)) {
       transform = parallel(this.item, transform)
-    } else if (typeof transform == 'string' || transform.name != undefined) {
-      transform = new CssAnimation(this.item, transform, duration, ease, delay, generated)
+    } else if (typeof transform == "string" || transform.name != undefined) {
+      transform = new CssAnimation(
+        this.item,
+        transform,
+        duration,
+        ease,
+        delay,
+        generated
+      )
     } else if (!(transform instanceof Collection)) {
       transform = new Animation(this.item, transform, duration, ease, delay)
     }

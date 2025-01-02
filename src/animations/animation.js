@@ -1,9 +1,9 @@
-import { Item } from '../item.js'
-import { easings } from './easings.js'
-import { Vector } from '../math/vector.js'
-import { Matrix } from '../math/matrix.js'
-import { Tween } from './tween.js'
-import { merge, transformProperty } from '../utils.js'
+import { Item } from "../item.js"
+import { easings } from "./easings.js"
+import { Vector } from "../math/vector.js"
+import { Matrix } from "../math/matrix.js"
+import { Tween } from "./tween.js"
+import { merge, transformProperty } from "../utils.js"
 
 export class Animation {
   /**
@@ -27,7 +27,7 @@ export class Animation {
     this.delay = (transform.delay || delay) | 0
     ease = transform.ease || ease
     this.ease = easings[ease] || easings.linear
-    this.easeName = transform.ease || ease || 'linear'
+    this.easeName = transform.ease || ease || "linear"
   }
 
   static skip = { duration: null, delay: null, ease: null }
@@ -46,7 +46,11 @@ export class Animation {
           }
           Animation.setItemState(item, property, computed)
         }
-        initial[property] = new Tween(item.get(property), transform[property], property)
+        initial[property] = new Tween(
+          item.get(property),
+          transform[property],
+          property
+        )
       }
     }
     return initial
@@ -55,7 +59,7 @@ export class Animation {
   static setItemState = function (item, property, computed) {
     if (property in Animation.transform) {
       let value = computed[transformProperty]
-      if (value === 'none') {
+      if (value === "none") {
         value = {
           translate: Vector.zero(),
           rotate: Vector.zero(),
@@ -64,9 +68,9 @@ export class Animation {
       } else {
         value = Matrix.decompose(Matrix.parse(value))
       }
-      item.set('translate', value.translate)
-      item.set('rotate', value.rotate)
-      item.set('scale', value.scale)
+      item.set("translate", value.translate)
+      item.set("rotate", value.rotate)
+      item.set("scale", value.scale)
     } else {
       item.set(property, computed[property])
     }
@@ -97,7 +101,7 @@ export class Animation {
     this.delay = (transform.delay || delay) | 0
     ease = transform.ease || ease
     this.ease = easings[ease] || easings.linear
-    this.easeName = transform.ease || ease || 'linear'
+    this.easeName = transform.ease || ease || "linear"
 
     merge(this.transformation, transform)
 
@@ -166,5 +170,4 @@ export class Animation {
     !abort && this.transform(this.ease(1))
     !seek && (this.start = null)
   }
-
 }

@@ -24,7 +24,8 @@ export class CssAnimation {
 
     this.duration = (animation.duration || duration) | 0
     this.delay = (animation.delay || delay) | 0
-    this.ease = easings.css[animation.ease] || easings.css[ease] || easings.css.linear
+    this.ease =
+      easings.css[animation.ease] || easings.css[ease] || easings.css.linear
 
     this._infinite = false
     this._generated = generated
@@ -39,22 +40,33 @@ export class CssAnimation {
     if (this.start !== null && !force) return
     this.start = tick + this.delay
 
-    this.item.style(animationProperty,
-      this.name + ' ' + this.duration + 'ms' + ' ' + this.ease + ' ' +
-      this.delay + 'ms' + (this._infinite ? ' infinite' : '') + ' ' + 'forwards')
+    this.item.style(
+      animationProperty,
+      this.name +
+        " " +
+        this.duration +
+        "ms" +
+        " " +
+        this.ease +
+        " " +
+        this.delay +
+        "ms" +
+        (this._infinite ? " infinite" : "") +
+        " " +
+        "forwards"
+    )
   }
 
   /**
    * Runs one tick of animation
    */
-  run() {
-  }
+  run() {}
 
   /**
    * Pauses animation
    */
   pause() {
-    this.item.style(animationProperty + '-play-state', 'paused')
+    this.item.style(animationProperty + "-play-state", "paused")
     this.diff = performance.now() - this.start
   }
 
@@ -62,7 +74,7 @@ export class CssAnimation {
    * Resumes animation
    */
   resume() {
-    this.item.style(animationProperty + '-play-state', 'running')
+    this.item.style(animationProperty + "-play-state", "running")
     this.start = performance.now() - this.diff
   }
 
@@ -74,7 +86,7 @@ export class CssAnimation {
       const computed = getComputedStyle(this.item.dom, null)
       const transform = computed[transformProperty]
 
-      this.item.style(animationProperty, '')
+      this.item.style(animationProperty, "")
       this.item.state = Matrix.decompose(Matrix.parse(transform))
       this.item.style()
     }

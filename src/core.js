@@ -7,17 +7,17 @@ import { World } from "./world.js"
  */
 export default {
   /**
- * Creates and initializes world with frame loop
- * @return {World}
- */
+   * Creates and initializes world with frame loop
+   * @return {World}
+   */
   world() {
-    return new World
+    return new World()
   },
   /**
- * Creates and initializes timeline
- * @return {Timeline}
- */
+   * Creates and initializes timeline
+   * @return {Timeline}
+   */
   timeline() {
-    return new Timeline
+    return new Timeline()
   }
 }

@@ -1,12 +1,11 @@
-import { Item } from '../item.js'
-import { Constant } from './forces/constant.js'
-import { Edge } from './forces/edge.js'
-import { Verlet } from './verlet.js'
-import { Matrix } from '../math/matrix.js'
-import { Vector } from '../math/vector.js'
+import { Item } from "../item.js"
+import { Constant } from "./forces/constant.js"
+import { Edge } from "./forces/edge.js"
+import { Verlet } from "./verlet.js"
+import { Matrix } from "../math/matrix.js"
+import { Vector } from "../math/vector.js"
 
 export class Particle extends Item {
-
   /**
    * Creates particle with physics
    * @param {HTMLElement} node
@@ -18,7 +17,7 @@ export class Particle extends Item {
   constructor(node, mass, viscosity, edge) {
     super(node)
 
-    if (typeof mass === 'object') {
+    if (typeof mass === "object") {
       viscosity = mass.viscosity
       edge = mass.edge
       mass = mass.mass
@@ -88,14 +87,24 @@ export class Particle extends Item {
       delta *= 0.001
 
       Constant.call(null, this)
-      this.edge && Edge.call(null, this, Vector.set(this.edge.min), Vector.set(this.edge.max), this.edge.bounce)
+      this.edge &&
+        Edge.call(
+          null,
+          this,
+          Vector.set(this.edge.min),
+          Vector.set(this.edge.max),
+          this.edge.bounce
+        )
 
       Verlet.call(null, this, delta, 1.0 - this.viscosity)
     }
   }
 
+  /**
+   * @return {ReturnType<Item['css']>}
+   */
   css() {
-    throw new Error('CSS is nor supported for physics');
+    throw new Error("CSS is nor supported for physics")
   }
 
   /**
@@ -104,8 +113,6 @@ export class Particle extends Item {
    */
   matrix() {
     const state = this.state
-    return Matrix.compose(
-      this.current.position, state.rotate, state.scale
-    )
+    return Matrix.compose(this.current.position, state.rotate, state.scale)
   }
 }

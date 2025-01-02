@@ -6,11 +6,11 @@ export class Tween {
     this.start = Tween.parseValue(start, type)
     this.end = Tween.parseValue(end, type)
 
-    this.suffix = Tween.px.indexOf(property) !== -1 ? 'px' : ''
+    this.suffix = Tween.px.indexOf(property) !== -1 ? "px" : ""
   }
 
-  static NUMERIC = 'NUMERIC'
-  static COLOR = 'COLOR'
+  static NUMERIC = "NUMERIC"
+  static COLOR = "COLOR"
 
   static propTypes = {
     color: Tween.COLOR,
@@ -18,15 +18,17 @@ export class Tween {
     borderColor: Tween.COLOR
   }
 
-  static px = '\
+  static px = "\
 margin,marginTop,marginLeft,marginBottom,marginRight,\
 padding,paddingTop,paddingLeft,paddingBottom,paddingRight,\
 top,left,bottom,right,\
 width,height,maxWidth,maxHeight,minWidth,minHeight,\
-borderRadius,borderWidth'.split(',')
+borderRadius,borderWidth".split(",")
 
   static parseValue(value, type) {
-    return type === Tween.COLOR ? Tween.parseColor(value) : Tween.parseNumeric(value)
+    return type === Tween.COLOR
+      ? Tween.parseColor(value)
+      : Tween.parseNumeric(value)
   }
 
   static parseNumeric(numeric) {
@@ -47,7 +49,9 @@ borderRadius,borderWidth'.split(',')
       }
     }
 
-    const rgb = color.match(/^rgba?\(([0-9.]*), ?([0-9.]*), ?([0-9.]*)(?:, ?([0-9.]*))?\)$/)
+    const rgb = color.match(
+      /^rgba?\(([0-9.]*), ?([0-9.]*), ?([0-9.]*)(?:, ?([0-9.]*))?\)$/
+    )
     if (rgb) {
       return {
         r: parseFloat(rgb[1]),
@@ -86,9 +90,11 @@ borderRadius,borderWidth'.split(',')
   }
 
   absolute(percent) {
-    let value = Number(this.start) + (Number(this.end) - Number(this.start)) * percent
+    /** @type {number | string} */
+    let value =
+      Number(this.start) + (Number(this.end) - Number(this.start)) * percent
     if (this.suffix) {
-      value += this.suffix
+      value = value + this.suffix
     }
     return value
   }
@@ -97,18 +103,21 @@ borderRadius,borderWidth'.split(',')
     const rgb = { r: 0, g: 0, b: 0 }
     let spectra, value
     for (spectra in rgb) {
-      const value = Math.round(this.start[spectra] + (this.end[spectra] - this.start[spectra]) * percent)
+      const value = Math.round(
+        this.start[spectra] +
+          (this.end[spectra] - this.start[spectra]) * percent
+      )
       rgb[spectra] = clamp(value, 0, 255)
     }
-    spectra = 'a'
-    value = Math.round(this.start[spectra] + (this.end[spectra] - this.start[spectra]) * percent)
+    spectra = "a"
+    value = Math.round(
+      this.start[spectra] + (this.end[spectra] - this.start[spectra]) * percent
+    )
     rgb[spectra] = clamp(value, 0, 1)
-    return 'rgba(' + [rgb.r, rgb.g, rgb.b, rgb.a] + ')'
+    return "rgba(" + [rgb.r, rgb.g, rgb.b, rgb.a] + ")"
   }
 }
 
 function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value));
+  return Math.min(max, Math.max(min, value))
 }
-
-

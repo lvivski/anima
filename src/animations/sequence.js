@@ -1,6 +1,6 @@
-import { Collection } from './collection'
-import { CssAnimation } from './css_animation'
-import { Item } from '../item'
+import { Collection } from "./collection"
+import { CssAnimation } from "./css_animation"
+import { Item } from "../item"
 
 export class Sequence extends Collection {
   /**
@@ -25,7 +25,7 @@ export class Sequence extends Collection {
 
     this.start = tick
     this.animations[0].init(tick, force)
-    this.emit('start')
+    this.emit("start")
   }
 
   /**
@@ -122,6 +122,6 @@ export class Sequence extends Collection {
     }
     this.animations = []
     this._infinite = false
-    this.emit('end')
+    this.emit("end")
   }
 }

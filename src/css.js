@@ -21,14 +21,14 @@ export class CSS {
     !idle && this.style()
   }
 
-  static skip = { translate: null, rotate: null, scale: null };
+  static skip = { translate: null, rotate: null, scale: null }
 
   /**
    * Creates new stylesheet and adds it to HEAD
    */
   createStyleSheet() {
-    const style = document.createElement('style')
-    document.getElementsByTagName('head')[0].appendChild(style)
+    const style = document.createElement("style")
+    document.getElementsByTagName("head")[0].appendChild(style)
   }
 
   /**
@@ -54,7 +54,7 @@ export class CSS {
     const computed = getComputedStyle(this.item.dom, null),
       transform = computed[transformProperty]
 
-    this.item.style(animationProperty, '')
+    this.item.style(animationProperty, "")
     this.item.state = Matrix.decompose(Matrix.parse(transform))
     this.item.style()
 
@@ -65,13 +65,16 @@ export class CSS {
    * Applies animations and sets item style
    */
   style() {
-    const animation = 'a' + Date.now() + 'r' + Math.floor(Math.random() * 1000)
+    const animation = "a" + Date.now() + "r" + Math.floor(Math.random() * 1000)
 
     const cssRules = this.stylesheet.cssRules
-    this.stylesheet.insertRule(this.keyframes(animation), cssRules ? cssRules.length : 0)
+    this.stylesheet.insertRule(
+      this.keyframes(animation),
+      cssRules ? cssRules.length : 0
+    )
 
     this.animation.empty()
-    this.animation.add(animation, this.animation.duration, '', 0, true)
+    this.animation.add(animation, this.animation.duration, "", 0, true)
   }
 
   /**
@@ -81,7 +84,7 @@ export class CSS {
    */
   keyframes(name) {
     let time = 0
-    const rule = ['@' + getProperty('keyframes') + ' ' + name + '{']
+    const rule = ["@" + getProperty("keyframes") + " " + name + "{"]
 
     for (let i = 0; i < this.animation.length; ++i) {
       const a = this.animation.get(i)
@@ -89,20 +92,15 @@ export class CSS {
 
       a.init(time)
 
-      if (a instanceof Animation) { // Single
-        i === 0 && rule.push(this.frame(0, easings.css[a.easeName]))
-
-        a.delay && rule.push(this.frame(time += a.delay))
-
-        a.transform(1)
-
-        rule.push(this.frame(time += a.duration, aNext && easings.css[aNext.easeName]))
-      } else if (a instanceof Collection) { // Parallel (it doesn't work with custom easings for now)
+      if (a instanceof Collection) {
+        // Parallel (it doesn't work with custom easings for now)
         let frames = []
         a.animations.forEach(function frame(a) {
           a.animations && a.animations.forEach(frame)
           a.delay && frames.indexOf(a.delay) === -1 && frames.push(a.delay)
-          a.duration && frames.indexOf(a.delay + a.duration) === -1 && frames.push(a.delay + a.duration)
+          a.duration &&
+            frames.indexOf(a.delay + a.duration) === -1 &&
+            frames.push(a.delay + a.duration)
         })
 
         frames = frames.sort(function (a, b) {
@@ -114,17 +112,27 @@ export class CSS {
           for (let j = 0; j < a.animations.length; ++j) {
             const pa = a.animations[j]
             // it's animation start or it's already ended
-            if (pa.delay >= frame || pa.delay + pa.duration < frame)
-              continue
+            if (pa.delay >= frame || pa.delay + pa.duration < frame) continue
             pa.transform(pa.ease((frame - pa.delay) / pa.duration))
           }
 
-          rule.push(this.frame(time += frame))
+          rule.push(this.frame((time += frame)))
         }
+      } else {
+        // Single
+        i === 0 && rule.push(this.frame(0, easings.css[a.easeName]))
+
+        a.delay && rule.push(this.frame((time += a.delay)))
+
+        a.transform(1)
+
+        rule.push(
+          this.frame((time += a.duration), aNext && easings.css[aNext.easeName])
+        )
       }
     }
-    rule.push('}')
-    return rule.join('')
+    rule.push("}")
+    return rule.join("")
   }
 
   /**
@@ -133,7 +141,7 @@ export class CSS {
    * @return {string}
    */
   percent(time) {
-    return (time * 100 / this.animation.duration).toFixed(3)
+    return ((time * 100) / this.animation.duration).toFixed(3)
   }
 
   /**
@@ -147,12 +155,24 @@ export class CSS {
     const props = []
     for (const property in this.item.state) {
       if (property in CSS.skip) continue
-      props.push(percent ? property.replace(/([A-Z])/g, '-$1') + ':' + this.item.get(property) + ';' : '')
+      props.push(
+        percent
+          ? property.replace(/([A-Z])/g, "-$1") +
+              ":" +
+              this.item.get(property) +
+              ";"
+          : ""
+      )
     }
-    return percent + '% {' +
-      (percent ? transformProperty + ':' + this.item.transform() + ';' : '') +
-      (props.join('')) +
-      (ease ? getProperty('animation-timing-function') + ':' + ease + ';' : '') +
-      '}'
+    return (
+      percent +
+      "% {" +
+      (percent ? transformProperty + ":" + this.item.transform() + ";" : "") +
+      props.join("") +
+      (ease
+        ? getProperty("animation-timing-function") + ":" + ease + ";"
+        : "") +
+      "}"
+    )
   }
 }

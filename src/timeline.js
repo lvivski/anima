@@ -2,7 +2,6 @@ import { fixTick } from "./utils.js"
 import { World } from "./world.js"
 
 export class Timeline extends World {
-
   /**
    * Creates new Timeline and start frame loop
    * @constructor
@@ -44,7 +43,7 @@ export class Timeline extends World {
       if (this.changed < length || this.running) {
         item.timeline(tick)
         this.changed++
-        this.emit('update', tick)
+        this.emit("update", tick)
       } else {
         item.style()
       }
